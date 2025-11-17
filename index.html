@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Card</title>
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+  <div class="scene" id="scene">
+    <div class="card" id="birthdayCard">
+      <!-- FRONT OF CARD -->
+      <div class="card-face front">
+        <h1 class="title">Happy Birthday!</h1>
+        <h2 class="name">Enter name</h2>
+
+        <div class="cake">
+          <img src="assets/images/cake.png" alt="Birthday Cake" class="cake-img">
+          <div class="candles">
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+          </div>
+        </div>
+
+        <p class="instruction">Blow out the candles to open your card 🎂</p>
+      </div>
+
+      <!-- INSIDE OF CARD - This BECOMES the left page -->
+      <div class="card-face inside">
+        <h3>Your Message Here 💌</h3>
+        <p>Dear [Name],</p>
+        <p>Write something sweet here...</p>
+        <p>Wishing you all the happiness in the world!</p>
+      </div>
+    </div> <!-- Close the card div here -->
+
+    <!-- RIGHT PAGE STANDALONE - Outside the card but inside the scene -->
+    <div class="right-page-standalone">
+      <h3>Memories 📸</h3>
+      <div style="height: 150px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 8px; margin: 15px 0;">
+        📸 Memory Photo
+      </div>
+      <p>More text or pictures can go here.</p>
+      <p>Can't wait to make more memories together!</p>
+    </div>
+  </div> <!-- Close the scene div here -->
+
+  <script src="scripts/main.js"></script>
+</body>
+</html>

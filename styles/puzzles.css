@@ -1,0 +1,656 @@
+/* puzzles.css - Clean Consolidated Version */
+@import url('https://fonts.googleapis.com/css2?family=Kranky&family=Mountains+of+Christmas:wght@400;700&display=swap');
+
+/* RESET & BASE STYLES */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/* MAIN APP CONTAINER */
+.puzzle-app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  flex-direction: column;
+  font-family: "Kranky", cursive;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+/* HEADER - COMPACT VERSION */
+.puzzle-header {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 12px 20px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  position: relative;
+  width: 100%;
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.puzzle-title {
+  font-family: "Mountains of Christmas", serif;
+  font-size: 1.6rem;
+  color: #ff6b8b;
+  margin: 0 0 5px 0;
+  line-height: 1.2;
+}
+
+.puzzle-subtitle {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+}
+
+/* PROGRESS SECTION */
+.progress-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #45a049);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+/* PUZZLE INDICATORS */
+.puzzle-indicators {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin: 0 5px;
+  padding: 0 15px;
+}
+
+.puzzle-indicators::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  background: #e0e0e0;
+  z-index: 1;
+}
+
+.puzzle-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  flex: 1;
+  max-width: 90px;
+}
+
+.puzzle-indicator.active {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.puzzle-indicator.completed {
+  opacity: 1;
+}
+
+.indicator-number {
+  width: 28px;
+  height: 28px;
+  background: #ff6b8b;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+  border: 2px solid white;
+}
+
+.puzzle-indicator.completed .indicator-number {
+  background: #4CAF50;
+}
+
+.indicator-label {
+  font-size: 0.65rem;
+  color: #555;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.completion-check {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  background: #4CAF50;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.puzzle-indicator.completed .completion-check {
+  opacity: 1;
+}
+
+/* MAIN CONTENT AREA */
+.puzzle-main {
+  flex: 1;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.puzzle-container {
+  max-width: 700px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  margin: 5px 0;
+  display: none;
+}
+
+.puzzle-container.active {
+  display: block;
+  animation: fadeInUp 0.4s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* PUZZLE CONTENT STYLES */
+.puzzle-header-inner {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.puzzle-header-inner h2 {
+  font-family: "Mountains of Christmas", serif;
+  font-size: 1.8rem;
+  color: #ff6b8b;
+  margin: 0 0 8px 0;
+}
+
+.puzzle-header-inner p {
+  font-size: 1rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Memory Puzzle */
+.questions-container {
+  margin: 20px 0;
+}
+
+.question-card {
+  background: linear-gradient(135deg, #fff9f9, #fff0f5);
+  padding: 20px;
+  border-radius: 12px;
+  border-left: 4px solid #ff6b8b;
+  margin-bottom: 15px;
+  display: none;
+}
+
+.question-card.active {
+  display: block;
+  animation: slideInRight 0.4s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.question-card h3 {
+  color: #ff6b8b;
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+}
+
+.question-text {
+  font-size: 1.2rem;
+  color: #333;
+  margin: 0 0 15px 0;
+  font-weight: bold;
+}
+
+.answer-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: "Kranky", cursive;
+  transition: all 0.3s ease;
+}
+
+.answer-input:focus {
+  outline: none;
+  border-color: #ff6b8b;
+  box-shadow: 0 0 0 2px rgba(255, 107, 139, 0.1);
+}
+
+/* Word Search */
+.wordsearch-container {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.wordsearch-info {
+  background: linear-gradient(135deg, #f0f8ff, #e6f7ff);
+  padding: 15px;
+  border-radius: 12px;
+  border-left: 4px solid #4dabf7;
+}
+
+.words-to-find h4 {
+  color: #4dabf7;
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+}
+
+.word-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.word-list li {
+  padding: 8px 12px;
+  margin: 6px 0;
+  background: white;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.word-list li.found {
+  background: #f0fff0;
+  border-color: #4CAF50;
+  color: #2e7d32;
+  text-decoration: line-through;
+}
+
+.wordsearch-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 1px;
+  background: #f0f0f0;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.grid-cell {
+  aspect-ratio: 1;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  border-radius: 3px;
+}
+
+/* Word Search Grid Cell States */
+.grid-cell.selected {
+    background: #ffeb3b !important;
+    color: #333 !important;
+    transition: all 0.2s ease;
+}
+
+.grid-cell.found {
+    background: #4CAF50 !important;
+    color: white !important;
+    font-weight: bold;
+}
+
+.grid-cell:hover {
+    background: #f8f9fa;
+}
+
+/* Word Search Grid - Fix for 12x12 */
+.wordsearch-container {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 20px;
+  margin: 20px 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.wordsearch-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1px;
+  background: #f0f0f0;
+  padding: 6px; /* Reduced padding */
+  border-radius: 8px;
+  max-width: 100%;
+  overflow-x: auto; /* Allow horizontal scroll if needed */
+}
+
+.grid-cell {
+  aspect-ratio: 1;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem; /* Smaller font for 12x12 */
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  border-radius: 2px; /* Smaller border radius */
+  min-width: 20px; /* Ensure minimum size */
+  min-height: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .wordsearch-container {
+    grid-template-columns: 180px 1fr;
+    gap: 15px;
+  }
+  
+  .grid-cell {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .wordsearch-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .wordsearch-info {
+    order: 2;
+  }
+  
+  .wordsearch-grid {
+    order: 1;
+  }
+  
+  .grid-cell {
+    font-size: 0.6rem;
+    min-width: 18px;
+    min-height: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-cell {
+    font-size: 0.55rem;
+    min-width: 16px;
+    min-height: 16px;
+  }
+}
+
+/* Timeline */
+.timeline-container {
+  margin: 20px 0;
+}
+
+.timeline-slots {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.timeline-slots::before {
+  content: '';
+  position: absolute;
+  top: 35px;
+  left: 10%;
+  right: 10%;
+  height: 3px;
+  background: linear-gradient(90deg, #ff6b8b, #4dabf7);
+  z-index: 1;
+}
+
+.timeline-slot {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  margin: 0 8px;
+}
+
+.slot-number {
+  width: 40px;
+  height: 40px;
+  background: #ff6b8b;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  border: 2px solid white;
+}
+
+.slot-content {
+  width: 100%;
+  min-height: 80px;
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.memory-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.memory-item {
+  background: white;
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: 2px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: grab;
+  transition: all 0.3s ease;
+}
+
+/* BUTTONS */
+.puzzle-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.puzzle-btn, .nav-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  font-family: "Kranky", cursive;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.puzzle-btn.primary, .nav-btn.primary {
+  background: linear-gradient(135deg, #ff6b8b, #ff8e53);
+  color: white;
+}
+
+/* COMPLETION SCREEN */
+.completion-screen {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.completion-content {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.celebration-animation {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.completion-screen h2 {
+  font-family: "Mountains of Christmas", serif;
+  font-size: 2rem;
+  color: #ff6b8b;
+  margin: 0 0 12px 0;
+}
+
+/* FOOTER */
+.puzzle-footer {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 15px 20px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.navigation-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* UTILITY */
+.hidden {
+  display: none !important;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .puzzle-header {
+    padding: 10px 15px;
+  }
+  
+  .puzzle-title {
+    font-size: 1.4rem;
+  }
+  
+  .wordsearch-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .timeline-slots {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .timeline-slots::before {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .puzzle-main {
+    padding: 10px;
+  }
+  
+  .puzzle-container {
+    padding: 15px;
+  }
+  
+  .puzzle-title {
+    font-size: 1.2rem;
+  }
+  
+  .puzzle-indicator {
+    max-width: 70px;
+  }
+  
+  .indicator-number {
+    width: 24px;
+    height: 24px;
+    font-size: 0.7rem;
+  }
+}
+
+@keyframes fallInContainer {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(var(--fall-distance, 500px)) rotate(360deg);
+        opacity: 0;
+    }
+}

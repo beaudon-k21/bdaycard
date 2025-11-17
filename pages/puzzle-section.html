@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Birthday Puzzle Adventure! 🎁</title>
+  <link rel="stylesheet" href="../styles/main.css">
+  <link rel="stylesheet" href="../styles/puzzles.css">
+</head>
+<body>
+  <div class="puzzle-app">
+    <!-- Progress Header -->
+    <header class="puzzle-header">
+      <h1 class="puzzle-title">🎂 Birthday Puzzle Challenge 🎂</h1>
+      <p class="puzzle-subtitle">Complete all 3 puzzles to unlock your surprise!</p>
+      
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        <div class="puzzle-indicators">
+          <div class="puzzle-indicator active" data-puzzle="memory">
+            <span class="indicator-number">1</span>
+            <span class="indicator-label">Memory Quiz</span>
+            <div class="completion-check">✓</div>
+          </div>
+          <div class="puzzle-indicator" data-puzzle="wordsearch">
+            <span class="indicator-number">2</span>
+            <span class="indicator-label">Word Search</span>
+            <div class="completion-check">✓</div>
+          </div>
+          <div class="puzzle-indicator" data-puzzle="timeline">
+            <span class="indicator-number">3</span>
+            <span class="indicator-label">Timeline</span>
+            <div class="completion-check">✓</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Puzzle Area - Shows One Puzzle at a Time -->
+    <main class="puzzle-main">
+      
+      <!-- PUZZLE 1: Memory Quiz -->
+      <div class="puzzle-container active" id="memoryPuzzle">
+        <div class="puzzle-content">
+          <div class="puzzle-header-inner">
+            <h2>🧠 Memory Quiz</h2>
+            <p>How well do you remember our special moments?</p>
+          </div>
+          
+          <div class="questions-container">
+            <div class="question-card active" data-question="1">
+              <h3>Question 1 of 3</h3>
+              <p class="question-text">Where did we first meet?</p>
+              <input type="text" class="answer-input" placeholder="Type your answer..." data-answer="coffee shop">
+              <div class="feedback"></div>
+            </div>
+            
+            <div class="question-card" data-question="2">
+              <h3>Question 2 of 3</h3>
+              <p class="question-text">What's your favorite color?</p>
+              <input type="text" class="answer-input" placeholder="Type your answer..." data-answer="blue">
+              <div class="feedback"></div>
+            </div>
+            
+            <div class="question-card" data-question="3">
+              <h3>Question 3 of 3</h3>
+              <p class="question-text">What's our special song?</p>
+              <input type="text" class="answer-input" placeholder="Type your answer..." data-answer="perfect">
+              <div class="feedback"></div>
+            </div>
+          </div>
+          
+          <div class="puzzle-controls">
+            <button class="puzzle-btn secondary" id="prevQuestion">← Previous</button>
+            <span class="question-counter">Question <span id="currentQuestion">1</span>/3</span>
+            <button class="puzzle-btn primary" id="nextQuestion">Next →</button>
+            <button class="puzzle-btn success hidden" id="completeMemory">Complete Puzzle! ✓</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PUZZLE 2: Personalized Word Search -->
+      <div class="puzzle-container" id="wordSearchPuzzle">
+        <div class="puzzle-content">
+          <div class="puzzle-header-inner">
+            <h2>🔍 Personalized Word Search</h2>
+            <p>Find all the words that represent our special memories</p>
+          </div>
+          
+          <div class="wordsearch-container">
+            <div class="wordsearch-info">
+              <div class="words-to-find">
+                <h4>Words to Find:</h4>
+                <ul class="word-list">
+                  <li data-word="LAUGHTER">LAUGHTER</li>
+                  <li data-word="ADVENTURE">ADVENTURE</li>
+                  <li data-word="SUNSHINE">SUNSHINE</li>
+                  <li data-word="MEMORIES">MEMORIES</li>
+                  <li data-word="TOGETHER">TOGETHER</li>
+                   <li data-word="LAUGHTER">CHALLENGING</li>
+                  <li data-word="ADVENTURE">GROWTH</li>
+                  <li data-word="SUNSHINE">FAITHFORWAD</li>
+                </ul>
+              </div>
+              <div class="wordsearch-stats">
+                <p>Found: <span id="wordsFound">0</span></p>
+                <button class="puzzle-btn secondary" id="hintButton">💡 Get Hint</button>
+              </div>
+            </div>
+            
+            <div class="wordsearch-grid" id="wordsearchGrid">
+              <!-- Grid will be generated by JavaScript -->
+              <!-- Example of what it will look like:
+                L A U G H T E R S
+                D V E N T U R E M
+                S U N S H I N E E
+                M E M O R I E S M
+                T O G E T H E R O
+                ... etc ...
+              -->
+            </div>
+          </div>
+          
+          <div class="puzzle-controls">
+            <button class="puzzle-btn secondary" id="resetWordSearch">Reset</button>
+            <button class="puzzle-btn primary" id="checkWordSearch">Check Progress</button>
+            <button class="puzzle-btn success hidden" id="completeWordSearch">Complete Puzzle! ✓</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PUZZLE 3: Timeline Challenge -->
+      <div class="puzzle-container" id="timelinePuzzle">
+        <div class="puzzle-content">
+          <div class="puzzle-header-inner">
+            <h2>📅 Timeline Challenge</h2>
+            <p>Drag our memories into the correct chronological order</p>
+          </div>
+          
+          <div class="timeline-container">
+            <div class="timeline-slots">
+              <div class="timeline-slot" data-slot="1">
+                <span class="slot-number">1st</span>
+                <div class="slot-content" data-correct="coffee"></div>
+                <div class="slot-label">First</div>
+              </div>
+              <div class="timeline-slot" data-slot="2">
+                <span class="slot-number">2nd</span>
+                <div class="slot-content" data-correct="movie"></div>
+                <div class="slot-label">Second</div>
+              </div>
+              <div class="timeline-slot" data-slot="3">
+                <span class="slot-number">3rd</span>
+                <div class="slot-content" data-correct="beach"></div>
+                <div class="slot-label">Third</div>
+              </div>
+            </div>
+            
+            <div class="memory-items">
+              <div class="memory-item" draggable="true" data-memory="beach">
+                <span class="memory-emoji">🏖️</span>
+                <div class="memory-details">
+                  <strong>Beach Vacation</strong>
+                  <span>Our amazing beach getaway</span>
+                </div>
+              </div>
+              <div class="memory-item" draggable="true" data-memory="coffee">
+                <span class="memory-emoji">☕</span>
+                <div class="memory-details">
+                  <strong>First Coffee</strong>
+                  <span>Where it all began</span>
+                </div>
+              </div>
+              <div class="memory-item" draggable="true" data-memory="movie">
+                <span class="memory-emoji">🎬</span>
+                <div class="memory-details">
+                  <strong>Movie Nights</strong>
+                  <span>Weekly tradition started</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="puzzle-controls">
+            <button class="puzzle-btn secondary" id="resetTimeline">Reset Order</button>
+            <button class="puzzle-btn primary" id="checkTimeline">Check Order</button>
+            <button class="puzzle-btn success hidden" id="completeTimeline">Complete Puzzle! ✓</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completion Screen -->
+      <div class="completion-screen hidden" id="completionScreen">
+        <div class="completion-content">
+          <div class="celebration-animation"></div>
+          <h2>Congratulations! You Did It! 🎂</h2>
+          <p class="completion-message">You've successfully completed all three puzzles!</p>
+          <div class="achievement-badges">
+            <div class="badge">🧠 Memory Master</div>
+            <div class="badge">🔍 Word Hunter</div>
+            <div class="badge">📅 Time Traveler</div>
+          </div>
+          <p class="unlock-message">Your special birthday surprise is now unlocked!</p>
+          <button class="puzzle-btn reveal-btn" id="revealSurprise">
+            🎁 Reveal Your Surprise! 🎁
+          </button>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Navigation Controls -->
+    <footer class="puzzle-footer">
+      <div class="navigation-controls">
+        <button class="nav-btn secondary hidden" id="prevPuzzle">← Previous Puzzle</button>
+        <div class="puzzle-status">
+          <span class="status-text">Puzzle <span id="currentPuzzleNumber">1</span> of 3</span>
+        </div>
+        <button class="nav-btn primary hidden" id="nextPuzzle">Next Puzzle →</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Confetti Container -->
+  <div id="confettiContainer"></div>
+
+  <script src="../scripts/puzzles/puzzle-manager.js"></script>
+  <script src="../scripts/puzzles/memory-puzzle.js"></script>
+  <script src="../scripts/puzzles/word-search.js"></script> <!-- Updated from word-scramble -->
+  <script src="../scripts/puzzles/timeline-puzzle.js"></script>
+  <script src="../scripts/effects/confetti.js"></script>
+</body>
+</html>

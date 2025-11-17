@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Special Surprise! 🎁</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+       body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom right, #ffd6e7, #fff5d7);
+}
+
+        .surprise-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Full Screen Image */
+        .surprise-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        /* Upload Interface */
+        .upload-interface {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            width: 400px;
+        }
+
+        .upload-interface h1 {
+            color: #ff6b8b;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .upload-interface p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        /* Upload Button */
+        .upload-btn {
+            background: linear-gradient(135deg, #ff6b8b, #ff8e53);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 139, 0.4);
+        }
+
+        /* File Input (Hidden) */
+        #imageUpload {
+            display: none;
+        }
+
+        /* Preview Container */
+        .image-preview {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: none;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .confirm-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .cancel-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .confirm-btn:hover, .cancel-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Celebration Elements */
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .upload-interface {
+                padding: 20px;
+                margin: 20px;
+            }
+
+            .upload-interface h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Animation for image reveal */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+    </style>
+</head>
+<body>
+    <div class="surprise-container">
+        <!-- This will show the uploaded image -->
+        <img id="surpriseImage" class="surprise-image" style="display: none;" alt="Your Special Surprise">
+        
+        <!-- Upload Interface -->
+        <div class="upload-interface">
+            <h1>🎉 Your Special Surprise! 🎉</h1>
+            <p>Upload a special image to reveal your personalized invitation!</p>
+            
+            <button class="upload-btn" onclick="document.getElementById('imageUpload').click()">
+                📸 Choose Your Image
+            </button>
+            
+            <input type="file" id="imageUpload" accept="image/*">
+            
+            <div class="image-preview" id="imagePreview">
+                <img id="previewImage" src="" alt="Preview">
+            </div>
+            
+            <div class="action-buttons" id="actionButtons">
+                <button class="confirm-btn" onclick="setFinalImage()">Use This Image</button>
+                <button class="cancel-btn" onclick="cancelUpload()">Choose Different</button>
+            </div>
+        </div>
+
+        
+    <script>
+        // Elements
+        const imageUpload = document.getElementById('imageUpload');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImage = document.getElementById('previewImage');
+        const actionButtons = document.getElementById('actionButtons');
+        const surpriseImage = document.getElementById('surpriseImage');
+        const successMessage = document.getElementById('successMessage');
+        const uploadInterface = document.querySelector('.upload-interface');
+
+        // Handle image upload
+        imageUpload.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            
+            if (file) {
+                // Check if it's an image
+                if (!file.type.match('image.*')) {
+                    alert('Please select an image file (JPEG, PNG, GIF, etc.)');
+                    return;
+                }
+
+                // Create a FileReader to read the image
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    // Show preview
+                    previewImage.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    
+                    // Show action buttons
+                    actionButtons.style.display = 'flex';
+                    
+                    // Scroll to preview
+                    imagePreview.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Set the final image
+        function setFinalImage() {
+            const file = imageUpload.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    // Set the surprise image
+                    surpriseImage.src = e.target.result;
+                    surpriseImage.style.display = 'block';
+                    surpriseImage.classList.add('fade-in');
+                    
+                    // Hide upload interface
+                    uploadInterface.style.display = 'none';
+                    
+                    // Show success message
+                    setTimeout(() => {
+                        successMessage.style.display = 'block';
+                        successMessage.classList.add('fade-in');
+                    }, 1000);
+                    
+                    // Trigger celebration
+                    triggerCelebration();
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Cancel upload and reset
+        function cancelUpload() {
+            imageUpload.value = '';
+            imagePreview.style.display = 'none';
+            actionButtons.style.display = 'none';
+        }
+
+        // Close success message
+        function closeMessage() {
+            successMessage.style.display = 'none';
+        }
+
+        // Celebration effect
+        function triggerCelebration() {
+            // Create confetti effect
+            createConfetti();
+            
+            // You can add more celebration effects here
+            // like playing sound, additional animations, etc.
+        }
+
+        // Simple confetti effect
+        function createConfetti() {
+            const colors = ['#ff6b8b', '#4CAF50', '#2196F3', '#FF9800', '#9C27B0'];
+            const confettiCount = 100;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.cssText = `
+                        position: fixed;
+                        width: 10px;
+                        height: 10px;
+                        background: ${colors[Math.floor(Math.random() * colors.length)]};
+                        top: -20px;
+                        left: ${Math.random() * 100}%;
+                        border-radius: 50%;
+                        pointer-events: none;
+                        z-index: 5;
+                        animation: confettiFall ${Math.random() * 3 + 2}s linear forwards;
+                    `;
+                    
+                    document.body.appendChild(confetti);
+                    
+                    // Remove confetti after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }, i * 30);
+            }
+        }
+
+        // Add confetti animation to style
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes confettiFall {
+                0% {
+                    transform: translateY(0) rotate(0deg);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Optional: Add keyboard support
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                if (successMessage.style.display === 'block') {
+                    closeMessage();
+                } else if (imagePreview.style.display === 'block') {
+                    cancelUpload();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

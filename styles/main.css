@@ -1,0 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=Kranky&family=Mountains+of+Christmas:wght@400;700&display=swap');
+
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom right, #ffd6e7, #fff5d7);
+}
+
+/* Card container */
+.scene {
+  perspective: 1200px;
+  width: 420px;
+  transition: width 2s ease;
+}
+
+.scene.open{
+  width: 840px;
+}
+
+.scene.open .card {
+  display: block;
+  opacity: 1; /* Make the entire card invisible */
+ /* pointer-events: none; /* Prevent interaction with invisible card */
+}
+
+
+.card {
+  width: 420px;
+  height: 560px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 2s ease;
+  transform-origin: left center; /* Book opening */
+  border-radius: 16px;
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* FRONT FACE */
+.front {
+  background: linear-gradient(to bottom right, #ffe0f0, #fffbe0);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Kranky", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* INSIDE FACE - BOOK PAGES */
+.inside {
+  background: #fffdf8;
+  transform: rotateY(180deg);
+  display: block; /* This makes the two pages sit side by side */
+  padding: 30px;
+  box-sizing: border-box;
+  overflow: auto;
+  background: linear-gradient(to right, #fffdf8, #fffaf0);
+  border-radius: 12px 0 0 12px;
+}
+
+.left-page, .right-page {
+display: none; /* hide the orginal pages */
+}
+
+/* NEW: Create standalone pages that appear when card opens */
+.right-page-standalone {
+  position: absolute;
+  top: 0;
+  width: 420px;
+  height: 100%;
+  background: #fffaf8;
+  padding: 30px;
+  box-sizing: border-box;
+  overflow: auto;
+  display: none; /* Hidden initially */
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+.right-page-standalone {
+  left: 420px;
+  background: linear-gradient(to left, #fffdf8, #fffaf0);
+  border-radius: 0 12px 12px 0;
+}
+
+/* Style the standalone pages */
+.left-page-standalone h3, .right-page-standalone h3 {
+  color: #ff4e88;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: "Mountains of Christmas", serif;
+}
+
+.left-page-standalone p, .right-page-standalone p {
+  margin-bottom: 15px;
+  line-height: 1.6;
+  color: #555;
+  font-size: 1.1rem;
+  font-family: "Kranky", serif;
+}
+
+/* Show pages when scene is open */
+.scene.open .left-page-standalone,
+.scene.open .right-page-standalone {
+  display: block;
+  opacity: 1;
+}
+
+
+.left-page {
+  border-right: 1px solid #f0f0f0;
+  background: linear-gradient(to right, #fffdf8, #fffaf0);
+}
+
+.right-page {
+  border-left: 1px solid #f0f0f0;
+  background: linear-gradient(to left, #fffdf8, #fffaf0);
+}
+
+.left-page h3, .right-page h3 {
+  color: #ff4e88;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: "Mountains of Christmas", serif;
+}
+
+.left-page p, .right-page p {
+  margin-bottom: 15px;
+  line-height: 1.6;
+  color: #555;
+  font-size: 1.1rem;
+  font-family: "Kranky", serif;
+}
+
+.right-page img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 15px 0;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Candle styling */
+.cake {
+  position: relative;
+  display: inline-block;
+}
+
+.cake-img {
+  width: 180px;
+}
+
+.candles {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 25px;
+}
+
+.candle {
+  width: 10px;
+  height: 40px;
+  background: #fff;
+  border-radius: 5px;
+  position: relative;
+}
+
+.flame {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  width: 10px;
+  height: 15px;
+  background: radial-gradient(circle, #ffeb3b 40%, #ff9800 80%);
+  border-radius: 50% 50% 40% 40%;
+  transform: translateX(-50%);
+  animation: flicker 0.3s infinite alternate;
+}
+
+@keyframes flicker {
+  0% { transform: translateX(-50%) scale(1); opacity: 1; filter: brightness(1); }
+  50% { transform: translateX(-50%) scale(1.1); opacity: 0.8; filter: brightness(1.2); }
+  100% { transform: translateX(-50%) scale(0.9); opacity: 0.9; filter: brightness(0.9); }
+}
+
+.instruction {
+  margin-top: 30px;
+  color: #333;
+  font-size: 1.2rem;
+  font-family: "Kranky", serif;
+}
+
+/* Book opening animation */
+.card.open {
+  transform: rotateY(-180deg) translate(-420px); /* Negative for book style */
+}
+
+/* Responsive styles */
+@media (max-width: 500px) {
+  .scene {
+    width: 85vw;
+  }
+  
+  .scene.open {
+    width: 170vw; /* Double for two pages */
+  }
+  
+  .card {
+    width: 85vw;
+    height: 120vw;
+    max-height: 500px;
+  }
+
+  .left-page-standalone, .right-page-standalone {
+    width: 85vw;
+    padding: 20px;
+  }
+
+  .right-page-standalone {
+    left: 85vw;
+  }
+
+  .left-page-standalone h3, .right-page-standalone h3 {
+    font-size: 1.3rem;
+  }
+
+  .left-page-standalone p, .right-page-standalone p {
+    font-size: 1rem;
+  }
+
+  .cake-img {
+    width: 140px;
+  }
+
+  .instruction {
+    font-size: 1rem;
+    padding: 0 15px;
+    text-align: center;
+  }
+}
+
