@@ -98,12 +98,25 @@ class TimelinePuzzle {
         // Drag event listeners
         memoryDiv.addEventListener('dragstart', this.handleDragStart.bind(this));
         memoryDiv.addEventListener('dragend', this.handleDragEnd.bind(this));
-        
+
         // Touch support for mobile
         memoryDiv.addEventListener('touchstart', this.handleTouchStart.bind(this));
+        memoryDiv.addEventListener('touchmove', this.handleTouchMove.bind(this));
         memoryDiv.addEventListener('touchend', this.handleTouchEnd.bind(this));
 
         return memoryDiv;
+    }
+
+    handleTouchMove(event) {
+        if (!this.draggedItem) return;
+        const touch = event.touches[0];
+        const elementUnderTouch = document.elementFromPoint(touch.clientX, touch.clientY);
+        // Highlight slot under finger
+        this.timelineSlots.forEach(slot => slot.classList.remove('drag-over'));
+        const slot = elementUnderTouch && elementUnderTouch.closest('.timeline-slot');
+        if (slot) {
+            slot.classList.add('drag-over');
+        }
     }
 
     handleDragStart(event) {
