@@ -228,18 +228,29 @@ checkWordAtPosition(word, startX, startY, direction) {
                 cell.textContent = this.grid[y][x];
                 cell.dataset.x = x;
                 cell.dataset.y = y;
-                
+
                 cell.addEventListener('mousedown', (e) => this.startSelection(e, x, y));
                 cell.addEventListener('mouseenter', (e) => this.extendSelection(e, x, y));
                 cell.addEventListener('touchstart', (e) => {
                     e.preventDefault();
                     this.startSelection(e, x, y);
                 });
-                
+                 cell.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                    // Get touch position
+                    const touch = e.touches[0];
+                    const target = document.elementFromPoint(touch.clientX, touch.clientY);
+                    if (target && target.classList.contains('grid-cell')) {
+                        const tx = parseInt(target.dataset.x);
+                        const ty = parseInt(target.dataset.y);
+                        this.extendSelection(e, tx, ty);
+                    }
+                });
+
                 this.gridElement.appendChild(cell);
             }
         }
-        
+
         document.addEventListener('mouseup', () => this.endSelection());
         document.addEventListener('touchend', () => this.endSelection());
     }
