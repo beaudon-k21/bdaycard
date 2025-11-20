@@ -1,6 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
   const flames = document.querySelectorAll('.flame');
   const instruction = document.querySelector('.instruction');
+  const scene = document.getElementById('scene');
+  const card = document.getElementById('birthdayCard');
+  const candles = document.querySelectorAll('.flame');
+  const fileInput = document.getElementById('fileInput');
+  const memoryPhoto = document.getElementById('memoryPhoto');
+  const memoryPhotoContainer = document.getElementById('memoryPhotoContainer');
+  const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+  const uploadBtn = document.querySelector('.upload-btn');
 
   // Ask for microphone access
   navigator.mediaDevices.getUserMedia({ audio: true })
@@ -57,6 +65,30 @@ function openCard() {
     
     card.classList.add("open");
     scene.classList.add("open");
+
+          // Upload functionality
+      uploadBtn.addEventListener('click', function() {
+        fileInput.click();
+      });
+
+      uploadPlaceholder.addEventListener('click', function() {
+        fileInput.click();
+      });
+
+      fileInput.addEventListener('change', function(e) {
+        if (e.target.files && e.target.files[0]) {
+          const reader = new FileReader();
+          
+          reader.onload = function(event) {
+            memoryPhoto.src = event.target.result;
+            memoryPhoto.style.display = 'block';
+            uploadPlaceholder.style.display = 'none';
+          };
+          
+          reader.readAsDataURL(e.target.files[0]);
+        }
+      });
+    
     
     // Show continue button instead of auto-redirect
     setTimeout(() => {

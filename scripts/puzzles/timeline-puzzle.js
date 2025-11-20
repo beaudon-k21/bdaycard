@@ -2,7 +2,7 @@
 class TimelinePuzzle {
     constructor() {
         this.memories = this.getPersonalizedMemories();
-        this.correctOrder = ['coffee', 'movie', 'beach']; // Correct chronological order
+        this.correctOrder = ['text', 'encounter', 'love']; // Correct chronological order
         this.userOrder = [];
         this.draggedItem = null;
         
@@ -15,25 +15,25 @@ class TimelinePuzzle {
     getPersonalizedMemories() {
         return [
             {
-                id: 'coffee',
-                emoji: '☕',
-                title: 'First Coffee Date',
+                id: 'text',
+                emoji: '💬',
+                title: 'First conversation',
                 description: 'Where it all began',
-                date: 'June 2020'
+                date: '21 February 2025'
             },
             {
-                id: 'movie',
-                emoji: '🎬',
-                title: 'Movie Nights',
-                description: 'Weekly tradition started',
-                date: 'August 2020'
+                id: 'encounter',
+                emoji: '👩🏾‍🤝‍👨🏽',
+                title: 'First link',
+                description: 'When we first shared a breath',
+                date: '29 March 2025'
             },
             {
-                id: 'beach',
-                emoji: '🏖️',
-                title: 'Beach Vacation',
-                description: 'Our amazing beach getaway',
-                date: 'July 2021'
+                id: 'love',
+                emoji: '👩🏾‍❤‍👨🏽',
+                title: 'The word love',
+                description: 'When you knew you where a gone girl',
+                date: '26 April 2025'
             }
         ];
     }

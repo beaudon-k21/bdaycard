@@ -15,16 +15,15 @@ class WordSearchPuzzle {
     }
 
     getPersonalizedWords() {
-        // Shorter words to ensure they fit in the grid
         return [
-            { word: "LOVE", found: false },
-            { word: "LAUGH", found: false },
-            { word: "FUN", found: false },
-            { word: "JOY", found: false },
-            { word: "HUG", found: false },
-            { word: "KISS", found: false },
-            { word: "DATE", found: false },
-            { word: "TIME", found: false }
+            { word: "CHERISHED", found: false },
+            { word: "ALIGNED", found: false },
+            { word: "STEADFAST", found: false },
+            { word: "BELOVED", found: false },
+            { word: "ENDURING", found: false },
+            { word: "INTERTWINED", found: false },
+            { word: "JOYFUL", found: false },
+            { word: "GRACEFUL", found: false }
         ];
     }
 

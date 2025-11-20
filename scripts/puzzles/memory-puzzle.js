@@ -17,21 +17,21 @@ class MemoryPuzzle {
         return [
             {
                 id: 1,
-                question: "Where did we first meet?",
-                answer: "coffee shop",
-                hints: ["We had our first conversation here", "It's a place with caffeine"]
+                question: "Where did we have our first proper date?",
+                answer: "Brooklyn Brothers Bedford",
+                hints: ["You spilled your drink all over the place", "It is a restaurant  Bedford"]
             },
             {
                 id: 2,
-                question: "What's your favorite color?",
-                answer: "blue",
-                hints: ["It's the color of the sky", "Think of the ocean"]
+                question: "When is our anniversary?",
+                answer: "14 April 2025",
+                hints: ["Some time in April"]
             },
             {
                 id: 3,
-                question: "What's our special song?",
-                answer: "perfect",
-                hints: ["Ed Sheeran sings it", "It starts with 'P'"]
+                question: "What emoji do I have you saved as on my phone?",
+                answer: "Fox",
+                hints: ["Think back into our earlier conversations", "It starts with 'F'"]
             }
         ];
     }
@@ -167,31 +167,97 @@ class MemoryPuzzle {
         }
     }
 
-    isAnswerCorrect(userAnswer, correctAnswer) {
-        // More flexible matching - allows for minor spelling mistakes or variations
-        const normalizedUser = userAnswer.toLowerCase().trim();
-        const normalizedCorrect = correctAnswer.toLowerCase().trim();
-        
-        // Exact match
-        if (normalizedUser === normalizedCorrect) return true;
-        
-        // Contains match (for longer answers)
-        if (normalizedCorrect.includes(normalizedUser) && normalizedUser.length >= 3) return true;
-        if (normalizedUser.includes(normalizedCorrect) && normalizedCorrect.length >= 3) return true;
-        
-        // Common variations
-        const variations = {
-            'coffee shop': ['cafe', 'coffeehouse', 'starbucks', 'coffee store'],
-            'blue': ['navy', 'sky blue', 'light blue', 'dark blue'],
-            'perfect': ['perfect by ed sheeran', 'ed sheeran perfect']
-        };
-        
-        if (variations[correctAnswer]?.includes(normalizedUser)) {
-            return true;
-        }
-        
-        return false;
+isAnswerCorrect(userAnswer, correctAnswer) {
+    const normalizedUser = userAnswer.toLowerCase().trim();
+    const normalizedCorrect = correctAnswer.toLowerCase().trim();
+    
+    // 1. Exact match
+    if (normalizedUser === normalizedCorrect) return true;
+    
+    // 2. Contains match (for partial answers)
+    if (normalizedCorrect.includes(normalizedUser) && normalizedUser.length >= 3) return true;
+    if (normalizedUser.includes(normalizedCorrect) && normalizedCorrect.length >= 3) return true;
+    
+    // 3. Common variations
+    const variations = {
+        'brooklyn brothers bedford': [
+            'brooklyn brothers', 
+            'brooklyn brother',
+            'brooklyn bros',
+            'brooklyn bros bedford',
+            'brooklyn brothers resturant',
+            'brooklyn brothers restaurant bedford',
+            'brookyn brothers', // common misspelling
+            'brooklin brothers'
+        ],
+        '14 april 2025': [
+            '14/04/2025', 
+            '14/04/25',
+            '14.04.2025',
+            '14-04-2025',
+            'april 14th', 
+            'april 14', 
+            '14th april', 
+            '14 april',
+            '14th of april',
+            'april 14th 2025',
+            'april 14 2025',
+            '14th april 2025'
+        ],
+        'fox': [
+            'fox and green heart', 
+            'fox & green heart',
+            'fox with green heart',
+            '🦊',
+            '🦊💚', 
+            '💚🦊',
+            'green heart fox',
+            'fox green heart',
+            'fox emoji',
+            'the fox',
+            'foxy'
+        ]
+    };
+    
+    // Check variations for the normalized correct answer
+    if (variations[normalizedCorrect]?.includes(normalizedUser)) {
+        return true;
     }
+    
+    // Check variations for the original correct answer (case-sensitive key)
+    if (variations[correctAnswer.toLowerCase()]?.includes(normalizedUser)) {
+        return true;
+    }
+    
+    // 4. Fuzzy matching for common misspellings
+    if (this.fuzzyMatch(normalizedUser, normalizedCorrect)) {
+        return true;
+    }
+    
+    return false;
+}
+
+fuzzyMatch(userAnswer, correctAnswer) {
+    // Simple fuzzy matching for common issues
+    const fuzzyRules = [
+        { from: 'resturant', to: 'restaurant' }, // common misspelling
+        { from: 'anniversery', to: 'anniversary' },
+        { from: 'brookyn', to: 'brooklyn' },
+        { from: 'brooklin', to: 'brooklyn' }
+    ];
+    
+    let normalizedUser = userAnswer;
+    let normalizedCorrect = correctAnswer;
+    
+    // Apply fuzzy corrections to both strings
+    fuzzyRules.forEach(rule => {
+        normalizedUser = normalizedUser.replace(rule.from, rule.to);
+        normalizedCorrect = normalizedCorrect.replace(rule.from, rule.to);
+    });
+    
+    // Check if they match after fuzzy corrections
+    return normalizedUser === normalizedCorrect;
+}
 
     updateAnswerUI(questionNumber, isCorrect) {
         const input = document.querySelector(`[data-question="${questionNumber}"] .answer-input`);

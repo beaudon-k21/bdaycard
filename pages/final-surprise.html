@@ -30,16 +30,18 @@
             align-items: center;
         }
 
-        /* Full Screen Image */
-        .surprise-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 1;
-        }
+.surprise-image {
+    position: relative;
+    height: 100vh;        /* Touches top and bottom */
+    width: auto;          /* Keeps natural width */
+    max-width: 90vw;      /* Prevents overflow */
+    object-fit: contain;  /* No distortion */
+    margin: 0 auto;       /* Centers it */
+    display: block;
+    z-index: 1;
+}
+
+
 
         /* Upload Interface */
         .upload-interface {

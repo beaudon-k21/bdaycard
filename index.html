@@ -4,7 +4,337 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Birthday Card</title>
-  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Kranky&family=Mountains+of+Christmas:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to bottom right, #ffd6e7, #fff5d7);
+      font-family: "Kranky", serif;
+    }
+
+    /* Card container */
+    .scene {
+      perspective: 1200px;
+      width: 420px;
+      transition: width 2s ease;
+      position: relative;
+    }
+
+    .scene.open {
+      width: 840px;
+    }
+
+    .card {
+      width: 420px;
+      height: 560px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 2s ease;
+      transform-origin: left center;
+      border-radius: 16px;
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* FRONT FACE */
+    .front {
+      background: linear-gradient(to bottom right, #ffe0f0, #fffbe0);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 2.5rem;
+      color: #ff4e88;
+      margin-bottom: 10px;
+      font-family: "Mountains of Christmas", serif;
+    }
+
+    .name {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    /* INSIDE FACE */
+    .inside {
+      background: #fffdf8;
+      transform: rotateY(180deg);
+      padding: 30px;
+      box-sizing: border-box;
+      overflow: auto;
+      background: linear-gradient(to right, #fffdf8, #fffaf0);
+      border-radius: 12px 0 0 12px;
+    }
+
+    .inside h3 {
+      color: #ff4e88;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      text-align: center;
+      font-family: "Mountains of Christmas", serif;
+    }
+
+    .inside p {
+      margin-bottom: 15px;
+      line-height: 1.6;
+      color: #555;
+      font-size: 1.1rem;
+    }
+
+    /* RIGHT PAGE */
+    .right-page-standalone {
+      position: absolute;
+      top: 0;
+      width: 420px;
+      height: 560px;
+      background: #fffaf8;
+      padding: 30px;
+      box-sizing: border-box;
+      overflow: auto;
+      display: none;
+      border-radius: 0 12px 12px 0;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      left: 420px;
+      background: linear-gradient(to left, #fffdf8, #fffaf0);
+    }
+
+    .right-page-standalone h3 {
+      color: #ff4e88;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      text-align: center;
+      font-family: "Mountains of Christmas", serif;
+    }
+
+    .right-page-standalone p {
+      margin-bottom: 15px;
+      line-height: 1.6;
+      color: #555;
+      font-size: 1.1rem;
+    }
+
+    .scene.open .right-page-standalone {
+      display: block;
+    }
+
+    /* CAKE STYLING */
+    .cake {
+      position: relative;
+      display: inline-block;
+      margin: 20px 0;
+    }
+
+    .cake-img {
+      width: 200px;
+      height: auto;
+      display: block;
+    }
+
+    .candles {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 30px;
+    }
+
+    .candle {
+      width: 12px;
+      height: 45px;
+      background: #fff;
+      border-radius: 6px;
+      position: relative;
+    }
+
+    .flame {
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      width: 12px;
+      height: 18px;
+      background: radial-gradient(circle, #ffeb3b 40%, #ff9800 80%);
+      border-radius: 50% 50% 40% 40%;
+      transform: translateX(-50%);
+      animation: flicker 0.3s infinite alternate;
+      cursor: pointer;
+    }
+
+    @keyframes flicker {
+      0% { transform: translateX(-50%) scale(1); opacity: 1; filter: brightness(1); }
+      50% { transform: translateX(-50%) scale(1.1); opacity: 0.8; filter: brightness(1.2); }
+      100% { transform: translateX(-50%) scale(0.9); opacity: 0.9; filter: brightness(0.9); }
+    }
+
+    .instruction {
+      margin-top: 30px;
+      color: #333;
+      font-size: 1.2rem;
+    }
+
+    /* Book opening animation */
+    .card.open {
+      transform: rotateY(-180deg) translate(-420px);
+    }
+
+    /* IMAGE UPLOAD SECTION */
+    .memory-photo-container {
+      height: 180px;
+      background: #f8f8f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      margin: 20px 0;
+      position: relative;
+      overflow: hidden;
+      border: 2px dashed #fffaf8;
+    }
+
+    .memory-photo {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: none;
+      border-radius: 8px;
+    }
+
+    .upload-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #888;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .upload-placeholder:hover {
+      color: #ff4e88;
+    }
+
+    .upload-placeholder i {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .upload-btn {
+      background: #ff4e88;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+      font-family: "Kranky", serif;
+    }
+
+    .upload-btn:hover {
+      background: #ff2d72;
+      transform: scale(1.05);
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    /* CONTINUE BUTTON */
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    .continue-btn {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #ff6b8b, #ff8e53);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 25px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 10000;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      animation: bounce 2s infinite;
+      display: none;
+      font-family: "Kranky", serif;
+    }
+
+    .continue-btn:hover {
+      transform: translateX(-50%) scale(1.05);
+    }
+
+    /* RESPONSIVE STYLES */
+    @media (max-width: 500px) {
+      .scene {
+        width: 90vw;
+      }
+      
+      .scene.open {
+        width: 180vw;
+      }
+      
+      .card {
+        width: 90vw;
+        height: 120vw;
+        max-height: 500px;
+      }
+
+      .right-page-standalone {
+        width: 90vw;
+        height: 120vw;
+        max-height: 500px;
+        padding: 20px;
+        left: 90vw;
+      }
+
+      .title {
+        font-size: 2rem;
+      }
+
+      .name {
+        font-size: 1.5rem;
+      }
+
+      .cake-img {
+        width: 150px;
+      }
+
+      .candles {
+        gap: 20px;
+        top: 15px;
+      }
+
+      .instruction {
+        font-size: 1rem;
+        padding: 0 15px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="scene" id="scene">
@@ -26,26 +356,148 @@
         <p class="instruction">Blow out the candles to open your card 🎂</p>
       </div>
 
-      <!-- INSIDE OF CARD - This BECOMES the left page -->
+      <!-- INSIDE OF CARD -->
       <div class="card-face inside">
-        <h3>Your Message Here 💌</h3>
-        <p>Dear [Name],</p>
-        <p>Write something sweet here...</p>
-        <p>Wishing you all the happiness in the world!</p>
-      </div>
-    </div> <!-- Close the card div here -->
+<p>To my gorgeous girlfriend,</p>
 
-    <!-- RIGHT PAGE STANDALONE - Outside the card but inside the scene -->
-    <div class="right-page-standalone">
-      <h3>Memories 📸</h3>
-      <div style="height: 150px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 8px; margin: 15px 0;">
-        📸 Memory Photo
+<p>They believe one should look for someone who has a good heart and a beautiful soul. With you, I discovered so much more. I discovered a Godly woman whose faith serves as her foundation, with a mind that challenges and inspires me, and a determination that can move mountains.</p>
+
+<p>I am the luckiest man to be celebrating you today.</p>
+
+<p>Happy birthday, my love.</p>
+
+<p>May your day be filled with the joy you spread to others and endless memories.</p>
       </div>
-      <p>More text or pictures can go here.</p>
+    </div>
+
+    <!-- RIGHT PAGE -->
+    <div class="right-page-standalone">
+      <div class="memory-photo-container" id="memoryPhotoContainer">
+        <img id="memoryPhoto" class="memory-photo" alt="Memory Photo">
+        <div class="upload-placeholder" id="uploadPlaceholder">
+          <i class="fas fa-camera"></i>
+          <span>Upload a Memory Photo</span>
+          <button class="upload-btn">Choose File</button>
+        </div>
+        <input type="file" id="fileInput" class="file-input" accept="image/*">
+      </div>
       <p>Can't wait to make more memories together!</p>
     </div>
-  </div> <!-- Close the scene div here -->
+  </div>
 
-  <script src="scripts/main.js"></script>
+  <button class="continue-btn" id="continueBtn">Continue to Puzzles 🎯</button>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const flames = document.querySelectorAll('.flame');
+      const instruction = document.querySelector('.instruction');
+      const scene = document.getElementById('scene');
+      const card = document.getElementById('birthdayCard');
+      const fileInput = document.getElementById('fileInput');
+      const memoryPhoto = document.getElementById('memoryPhoto');
+      const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+      const uploadBtn = document.querySelector('.upload-btn');
+      const continueBtn = document.getElementById('continueBtn');
+
+      // Initialize upload functionality
+      function initializeUpload() {
+        uploadBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          fileInput.click();
+        });
+
+        uploadPlaceholder.addEventListener('click', function() {
+          fileInput.click();
+        });
+
+        fileInput.addEventListener('change', function(e) {
+          if (e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+              memoryPhoto.src = event.target.result;
+              memoryPhoto.style.display = 'block';
+              uploadPlaceholder.style.display = 'none';
+            };
+            
+            reader.readAsDataURL(e.target.files[0]);
+          }
+        });
+      }
+
+      // Initialize upload when page loads
+      initializeUpload();
+
+      // Continue button functionality
+      continueBtn.addEventListener('click', () => {
+        document.body.style.opacity = '0.7';
+        document.body.style.transition = 'opacity 0.5s ease';
+        
+        setTimeout(() => {
+          // Change this to your actual puzzle page URL
+          window.location.href = 'pages/puzzle-section.html';
+        }, 500);
+      });
+
+      // Microphone functionality for blowing candles
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          const mic = audioContext.createMediaStreamSource(stream);
+          const analyser = audioContext.createAnalyser();
+          const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+          mic.connect(analyser);
+
+          function detectBlow() {
+            analyser.getByteFrequencyData(dataArray);
+            let values = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+              values += dataArray[i];
+            }
+            let average = values / dataArray.length;
+
+            if (average > 40) {
+              blowOutCandles();
+            }
+
+            requestAnimationFrame(detectBlow);
+          }
+
+          detectBlow();
+        })
+        .catch(err => {
+          console.error('Microphone access denied:', err);
+          instruction.textContent = "Please allow mic access to blow out the candles 🎤";
+        });
+
+      // Function to extinguish flames
+      function blowOutCandles() {
+        flames.forEach(f => {
+          f.style.animation = 'none';
+          f.style.opacity = '0';
+          f.style.transition = 'opacity 1s ease-out';
+        });
+        instruction.textContent = "🎉 The candles are out! Opening your card...";
+        setTimeout(openCard, 2000);
+      }
+
+      // Click functionality for candles (fallback)
+      flames.forEach(flame => {
+        flame.addEventListener('click', blowOutCandles);
+      });
+
+      // Card opening function
+      function openCard() {
+        card.classList.add("open");
+        scene.classList.add("open");
+        
+        // Show continue button
+        setTimeout(() => {
+          continueBtn.style.display = 'block';
+        }, 2000);
+      }
+    });
+  </script>
 </body>
 </html>
